@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Random Button Position</title>
+    <style>
+      #customButton {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button id="customButton" onclick="moveButton()">Click on</button>
+
+    <script>
+      var flag = 0;
+      var negativePoints = 0;
+      var timeId;
+      var level = 1;
+      var timeLimit = 2000; // 1.5 seconds
+
+      function moveButtonWithoutCounterIncrement() {
+        var x = Math.floor(Math.random() * window.innerWidth);
+        var y = Math.floor(Math.random() * window.innerHeight);
+
+        var button = document.getElementById("customButton");
+        button.style.left = x + "px";
+        button.style.top = y + "px";
+      }
+
+      function moveButtonTimeout() {
+        moveButtonWithoutCounterIncrement(); // move  button
+        negativePoints++; // increment negative points
+
+        // Call moveButtonWithoutCounterIncrement again after timeLimit
+        timeId = setTimeout(moveButtonTimeout, timeLimit);
+      }
+
+      function moveButton() {
+        clearTimeout(timeId); // clear the timeout
+
+        var x = Math.floor(Math.random() * window.innerWidth);
+        var y = Math.floor(Math.random() * window.innerHeight);
+
+        var button = document.getElementById("customButton");
+        button.style.backgroundColor = "green";
+        button.style.left = x + "px";
+        button.style.top = y + "px";
+
+        flag++;
+        if (flag === 3) {
+          level++;
+          alert("You passed level " + (level - 1) + +" Now on level " + level);
+          flag = 0; // reset counter
+          negativePoints = 0;
+          timeLimit = Math.max(timeLimit - 500, 200); // button speed will increase twice as fast
+        }
+
+        timeId = setTimeout(moveButtonTimeout, timeLimit);
+      }
+
+      moveButton();
+    </script>
+    <script></script>
+  </body>
+</html>
